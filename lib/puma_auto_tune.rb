@@ -11,11 +11,12 @@ require 'puma_auto_tune/memory'
 module PumaAutoTune
   INFINITY    = 1/0.0
   RESOURCES = { ram: PumaAutoTune::Memory.new }
+  HEROKU_ULIMIT_TO_RAM_PATH = File.expand_path('../../bin/heroku_ulimit_to_ram', __FILE__)
 
   extend self
 
   def self.default_ram
-    result = `bin/heroku_ulimit_to_ram`
+    result = system(HEROKU_ULIMIT_TO_RAM_PATH)
     default = if $?.success?
       Integer(result)
     else

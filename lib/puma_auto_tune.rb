@@ -16,7 +16,7 @@ module PumaAutoTune
   extend self
 
   def self.default_ram
-    result = system(HEROKU_ULIMIT_TO_RAM_PATH)
+    result = `#{HEROKU_ULIMIT_TO_RAM_PATH}`
     default = if $?.success?
       Integer(result)
     else

@@ -12,17 +12,14 @@ module PumaAutoTune
     alias :mb :memory
 
     def get_memory
-      @memory = if restarting?
-        0
-      else
-        ::GetProcessMem.new(self.pid).mb
-      end
+      return 0 if restarting?
+
+      @memory = ::GetProcessMem.new(self.pid).mb
     end
 
     def restarting?
       @restarting
     end
-
 
     def restart
       @restarting = true

@@ -1,6 +1,7 @@
 Bundler.require
 
 require 'test/unit'
+require 'timeout'
 
 class PumaRemote
 

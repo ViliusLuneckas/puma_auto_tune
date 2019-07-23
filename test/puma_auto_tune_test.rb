@@ -24,13 +24,13 @@ class PumaAutoTuneTest < Test::Unit::TestCase
     @puma = PumaRemote.new(ram: 1, puma_workers: 5).spawn
     @puma.wait
 
+    assert @puma.wait %r{current_cluster_size=5}
+    assert @puma.wait %r{current_cluster_size=4}
+    assert @puma.wait %r{current_cluster_size=3}
+    assert @puma.wait %r{current_cluster_size=2}
     assert @puma.wait %r{current_cluster_size=1}
 
-    assert_match /max_worker_limit=3/,     @puma.log.read
-    assert_match /max_worker_limit=2/,     @puma.log.read
-    assert_match /max_worker_limit=1/,     @puma.log.read
-    # refute
-    refute_match /max_worker_limit=0/,     @puma.log.read
+    refute_match /max_worker_limit=0/, @puma.log.read
   end
 
   def test_increment_workers
